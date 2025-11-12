@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Navigation from "./components/Navigation";
+import ScrollNavigation from "./components/ScrollNavigation";
 import Hero from "./components/Hero";
 import Testimonials from "./components/Testimonials";
 import Products from "./components/Products";
@@ -12,18 +13,6 @@ function App() {
 	const [currentSection, setCurrentSection] = useState(0);
 
 	useEffect(() => {
-		const starsContainer = document.getElementById("stars");
-		if (starsContainer) {
-			for (let i = 0; i < 200; i++) {
-				const star = document.createElement("div");
-				star.className = "star";
-				star.style.left = Math.random() * 100 + "%";
-				star.style.top = Math.random() * 100 + "%";
-				star.style.animationDelay = Math.random() * 3 + "s";
-				starsContainer.appendChild(star);
-			}
-		}
-
 		const observerOptions = {
 			threshold: 0.1,
 			rootMargin: "0px 0px -50px 0px",
@@ -89,10 +78,22 @@ function App() {
 				<div className="absolute bottom-8 left-1/2 z-100 -translate-x-1/2 animate-bounce">
 					<button
 						onClick={scrollToNext}
-						className="flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-white/10 backdrop-blur-sm transition-all hover:bg-white/20 hover:scale-110 hover:border-[#00d4ff]/50 hover:shadow-lg hover:shadow-[#00d4ff]/30"
+						className="flex h-12 w-12 items-center justify-center rounded-full border backdrop-blur-sm transition-all hover:scale-110 hover:shadow-lg"
+						style={{
+							borderColor: 'var(--color-borderLight)',
+							backgroundColor: 'var(--color-surface)'
+						}}
+						onMouseEnter={(e) => {
+							e.currentTarget.style.borderColor = 'var(--color-primary)';
+							e.currentTarget.style.boxShadow = '0 0 20px var(--color-shadow)';
+						}}
+						onMouseLeave={(e) => {
+							e.currentTarget.style.borderColor = 'var(--color-borderLight)';
+							e.currentTarget.style.boxShadow = 'none';
+						}}
 						aria-label="Scroll to next section"
 					>
-						<span className="text-2xl text-white">↓</span>
+						<span className="text-2xl" style={{ color: 'var(--color-text)' }}>↓</span>
 					</button>
 				</div>
 			</div>
@@ -109,7 +110,7 @@ function App() {
 				<Products />
 			</div>
 
-			<div id="founders">
+			<div className="scroll-section" id="founders">
 				<Founders />
 			</div>
 
@@ -118,30 +119,7 @@ function App() {
 			</div>
 			<Footer />
 
-			<div className="fixed top-1/2 right-6 z-998 hidden -translate-y-1/2 flex-col gap-3 lg:flex">
-				{["Hero", "Testimonials", "Products"].map((label, index) => (
-					<button
-						key={label}
-						onClick={() => {
-							const sections = document.querySelectorAll(".scroll-section");
-							sections[index]?.scrollIntoView({
-								behavior: "smooth",
-								block: "start",
-							});
-						}}
-						className={`group relative h-3 w-3 rounded-full transition-all hover-scale ${
-							currentSection === index
-								? "scale-125 bg-[#00d4ff] shadow-lg shadow-[#00d4ff]/50"
-								: "bg-white/30 hover:bg-white/50 hover:scale-110"
-						}`}
-						aria-label={`Go to ${label}`}
-					>
-						<span className="pointer-events-none absolute top-1/2 right-6 -translate-y-1/2 rounded bg-black/80 px-3 py-1 text-xs whitespace-nowrap text-white opacity-0 transition-opacity group-hover:opacity-100">
-							{label}
-						</span>
-					</button>
-				))}
-			</div>
+			<ScrollNavigation currentSection={currentSection} />
 		</div>
 	);
 }

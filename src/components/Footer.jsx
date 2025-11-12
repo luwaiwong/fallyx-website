@@ -1,8 +1,8 @@
 const Footer = () => {
   return (
-    <footer className="bg-black border-t border-white/10 px-4 pb-6 ">
+    <footer className="px-4 pb-6 border-t" style={{ backgroundColor: 'var(--color-background)', borderColor: 'var(--color-borderLight)' }}>
       
-      <div className=" border-white/10 pt-6 md:pt-8 text-center text-white/40 text-sm">
+      <div className="pt-6 md:pt-8 text-center text-sm" style={{ borderColor: 'var(--color-borderLight)', color: 'var(--color-textMuted)' }}>
         <p>&copy; 2025 Ascenix. All rights reserved.</p>
       </div>
     </footer>

@@ -1,16 +1,39 @@
+import { useTheme } from "../hooks/useTheme";
+import { hexToRgba } from "../utils/colorUtils";
+
 const ProblemItem = ({ number, title, description }) => {
+	const { colors } = useTheme();
+	
 	return (
-		<div className="animate-on-scroll hover-lift hover-glow flex gap-4 rounded-lg border-l-4 border-[#ff0066] bg-[#ff0066]/5 p-4 transition-all duration-300 hover:border-[#ff0066] hover:bg-[#ff0066]/10 md:gap-6 md:p-6">
+		<div 
+			className="animate-on-scroll flex gap-4 rounded-lg border-l-4 p-4 transition-all md:gap-6 md:p-6 cursor-pointer"
+			style={{
+				borderLeftColor: colors.error,
+				backgroundColor: hexToRgba(colors.error, 0.05),
+				transitionProperty: "background-color, transform",
+			}}
+			onMouseEnter={(e) => {
+				e.currentTarget.style.backgroundColor = hexToRgba(colors.error, 0.1);
+				e.currentTarget.style.transform = "translateX(12px)";
+			}}
+			onMouseLeave={(e) => {
+				e.currentTarget.style.backgroundColor = hexToRgba(colors.error, 0.05);
+				e.currentTarget.style.transform = "translateX(0)";
+			}}
+		>
 			<div className="shrink-0">
-				<div className="hover-scale flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-[#ff0066] to-[#ff3366] text-lg font-bold text-white transition-transform duration-300 md:h-12 md:w-12 md:text-xl">
+				<div 
+					className="hover-scale flex h-10 w-10 items-center justify-center rounded-full text-lg font-bold transition-transform duration-300 md:h-12 md:w-12 md:text-xl"
+					style={{ backgroundColor: colors.error, color: colors.text }}
+				>
 					{number}
 				</div>
 			</div>
 			<div>
-				<h3 className="mb-2 text-lg font-bold text-white md:text-xl">
+				<h3 className="mb-2 text-lg font-bold md:text-xl" style={{ color: colors.text }}>
 					{title}
 				</h3>
-				<p className="text-sm leading-relaxed text-white/70 md:text-base">
+				<p className="text-sm leading-relaxed md:text-base" style={{ color: colors.textSecondary }}>
 					{description}
 				</p>
 			</div>
@@ -19,6 +42,8 @@ const ProblemItem = ({ number, title, description }) => {
 };
 
 const Problem = () => {
+	const { colors } = useTheme();
+	
 	const problems = [
 		{
 			number: 1,
@@ -46,24 +71,35 @@ const Problem = () => {
 			className="px-4 py-16 md:px-8 md:py-24 lg:px-12 lg:py-32"
 		>
 			<div className="mx-auto">
-				<div className="animate-on-scroll mb-12 text-center">
-					<h2 className="mb-4 text-2xl font-extrabold md:mb-6 md:text-5xl lg:text-6xl">
-						The Problem
-					</h2>
-				</div>
 
 				<div className="grid grid-cols-1 items-center gap-8 md:gap-12 lg:grid-cols-2 lg:gap-16">
-					<div className="animate-on-scroll hover-glow hover-scale relative flex h-[400px] w-full items-center justify-center overflow-hidden rounded-3xl border-2 border-[#ff0066]/30 bg-gradient-to-br from-[#ff0066]/20 to-[#ff3366]/10 text-6xl transition-all duration-300 md:h-[500px] md:text-7xl lg:h-[600px] lg:text-8xl">
-						<div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,0,102,0.1),transparent_50%)]"></div>
-						<span className="hover-scale relative z-10 transition-transform duration-300">
-							⚠️
-						</span>
-					</div>
-
 					<div className="flex flex-col gap-6 md:gap-8">
+
+						<div className="animate-on-scroll text-center">
+							<h2 className="text-5xl font-extrabold  " style={{ color: colors.text }}>
+								The Problem
+							</h2>
+						</div>
 						{problems.map((problem) => (
 							<ProblemItem key={problem.number} {...problem} />
 						))}
+					</div>
+					<div 
+						className="animate-on-scroll hover-glow hover-scale relative flex w-full items-center justify-center overflow-hidden rounded-3xl border-2 text-6xl transition-all duration-300  md:text-7xl  lg:text-8xl h-full"
+						style={{
+							borderColor: hexToRgba(colors.error, 0.3),
+							backgroundColor: hexToRgba(colors.error, 0.2)
+						}}
+					>
+						<div 
+							className="absolute inset-0"
+							style={{
+								background: `radial-gradient(circle at 50% 50%, ${hexToRgba(colors.error, 0.1)}, transparent 50%)`
+							}}
+						></div>
+						<span className="hover-scale relative z-10 transition-transform duration-300">
+							⚠️
+						</span>
 					</div>
 				</div>
 			</div>
